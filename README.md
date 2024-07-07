@@ -4,23 +4,23 @@
 
 
 #### FASE 1) Considere um sistema operacional que implementa escalonamento de processos. O funcionamento esperado é que esse ambiente tenha N processos que podem chegar em tempos distintos para execução. Para cada processo, deve ser informado manualmente:
-  Tempo de chegada  
-  Tempo de execução
-  Deadline
-  Quantum do sistema
-  Sobrecarga do sistema
+ * Tempo de chegada  
+ * Tempo de execução
+ * Deadline
+ * Quantum do sistema
+ * Sobrecarga do sistema
 
 É necessário guardar essas informações, de tal forma que não seja necessário repetir esses dados de entrada quando for trocado o algoritmo de escalonamento.
 
 Esse sistema deve implementar os algoritmos de escalonamento:  
-  FIFO
-  SJF
-  Round Robin
-  EDF
+ * FIFO
+ * SJF
+ * Round Robin
+ * EDF
 
 #### FASE 2) Esse sistema deve implementar os algoritmos de substituição de páginas:
-  FIFO
-  Menos Recentemente Utilizada
+ * FIFO
+ * Menos Recentemente Utilizada
 
 Requisitos: 
 
@@ -33,4 +33,4 @@ Deve-se criar o gráfico de Gantt para mostrar as execuções dos processos, vis
 A resposta deve ser dada em função do turnaround médio (tempo de espera + tempo de execução)
 Colocar delay para verificar a execução 
 Para os testes, favor não apagar os dados de entrada a cada execução.
--  A linguagem de programação é de escolha do grupo.
+* A linguagem de programação é de escolha do grupo.
