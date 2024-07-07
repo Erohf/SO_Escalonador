@@ -1,5 +1,3 @@
-# SO_Escalonador
-
 ## Trabalho Principal SO
 
 ### Trabalho de Escalonamento
