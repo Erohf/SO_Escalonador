@@ -13,8 +13,7 @@ class Processo:
         self.tempo = tempo
 
     def __str__(self):
-        return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, "
-                f"Deadline: {self.deadline}")
+        return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, Deadline: {self.deadline}, Tempo: {self.tempo}")
 
 class Escolha:
     def __init__(self):

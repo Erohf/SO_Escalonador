@@ -13,6 +13,7 @@ class FIFO:
             processo.tempo = tempo_atual
             tempo_execucao = processo.execucao + self.sobrecarga
             print(f"Processo {processo.id} executado de {tempo_atual} até {tempo_atual + processo.execucao}")
+            processo.tempo = tempo_atual + processo.execucao
             tempo_atual += tempo_execucao
             if self.sobrecarga > 0:
                 print(f"Sobrecarga de {tempo_atual - self.sobrecarga} até {tempo_atual}")
