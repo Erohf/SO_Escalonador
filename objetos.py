@@ -4,12 +4,13 @@ class Sistema:
         self.sobrecarga = sobrecarga
 
 class Processo:
-    def __init__(self, id, chegada, execucao, deadline, prioridade=None):
+    def __init__(self, id, chegada, execucao, deadline, tempo=None, prioridade=None):
         self.id = id
         self.chegada = chegada
         self.execucao = execucao
         self.deadline = deadline
         self.prioridade = prioridade
+        self.tempo = tempo
 
     def __str__(self):
         return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, "

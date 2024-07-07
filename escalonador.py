@@ -1,4 +1,5 @@
 from objetos import *
+from algoritmos import *
 
 def main():
     int_quantum = int(input("\nQual o quantum do sistema? "))
@@ -30,6 +31,17 @@ def main():
 
     escolha = Escolha()
     print(f"\nVocê escolheu o algoritmo: {escolha.opcao}")
+
+    if escolha.opcao == 1:
+        escalonador = FIFO(processos, sistema.quantum, sistema.sobrecarga)
+    elif escolha.opcao == 2:
+        escalonador = SJF(processos, sistema.quantum, sistema.sobrecarga)
+    elif escolha.opcao == 3:
+        escalonador = EDF(processos, sistema.quantum, sistema.sobrecarga)
+    elif escolha.opcao == 4:
+        escalonador = RoundRobin(processos, sistema.quantum, sistema.sobrecarga)
+    
+    escalonador.executar()
 
     print("\nLista de Processos Armazenados:")
     for processo in processos:
