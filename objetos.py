@@ -8,12 +8,17 @@ class Processo:
         self.id = id
         self.chegada = chegada
         self.execucao = execucao
+        self.execucaoRestante = execucao
         self.deadline = deadline
         self.prioridade = prioridade
         self.tempo = tempo
 
     def __str__(self):
         return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, Deadline: {self.deadline}, Tempo: {self.tempo}")
+
+    def __eq__(self, other):
+        return self.id == other.id
+
 
 class Escolha:
     def __init__(self):

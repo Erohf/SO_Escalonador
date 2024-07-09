@@ -15,11 +15,11 @@ def main():
     for i in range(int_processos):
         int_id = i+1
 
-        int_chegada = int(input(f"\nQual o tempo de chegada do processo {i}? "))
+        int_chegada = int(input(f"\nQual o tempo de chegada do processo {int_id}? "))
 
-        int_execucao = int(input(f"\nQual o tempo de execução do processo {i}? "))
+        int_execucao = int(input(f"\nQual o tempo de execução do processo {int_id}? "))
 
-        int_deadline = int(input(f"\nQual o deadline do processo {i}? "))
+        int_deadline = int(input(f"\nQual o deadline do processo {int_id}? "))
 
         # print(f"Qual a prioridade do processo {i}?")
         # int_prioridade = int(input())
@@ -27,7 +27,7 @@ def main():
         processo = Processo(int_id, int_chegada, int_execucao, int_deadline)
         processos.append(processo)
 
-        print(f"\nProcesso {i} criado com sucesso!")
+        print(f"\nProcesso {int_id} criado com sucesso!")
 
     escolha = Escolha()
     print(f"\nVocê escolheu o algoritmo: {escolha.opcao}")
