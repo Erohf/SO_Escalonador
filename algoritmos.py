@@ -87,28 +87,52 @@ class RoundRobin:
         self.sobrecarga = sobrecarga
 
     def executar(self):
-        print(f"Executando escalonamento Round Robin com quantum de {self.quantum}:")
+        grafico = Grafico(len(self.processos), "RoundRobin")
+
+        print(f"Executando escalonamento Round Robin com quantum = {self.quantum}:")
         tempo_atual = 0
         queue = self.processos[:]
+        processosProntos = []
+        quantumRestante = self.quantum
+        inSobrecarga = False
         
         while queue:
-            processo = queue.pop(0)
-            if processo.chegada > tempo_atual:
-                tempo_atual = processo.chegada
-            if processo.execucao > self.quantum:
-                processo.tempo = tempo_atual
-                print(f"Processo {processo.id} executado de {tempo_atual} até {tempo_atual + self.quantum}")
-                tempo_atual += self.quantum
-                processo.execucao -= self.quantum
-                queue.append(processo)
-                if self.sobrecarga > 0:
-                    print(f"Sobrecarga de {tempo_atual - self.sobrecarga} até {tempo_atual}")
+            self.updatePronto(processosProntos, queue, tempo_atual)
+            if len(processosProntos) == 0:
+                tempo_atual += 1
             else:
-                processo.tempo = tempo_atual
-                print(f"Processo {processo.id} executado de {tempo_atual} até {tempo_atual + processo.execucao}")
-                tempo_atual += processo.execucao
-                if self.sobrecarga > 0:
-                    print(f"Sobrecarga de {tempo_atual - self.sobrecarga} até {tempo_atual}")
+                for processo in processosProntos:
+                    if processo == processosProntos[0]:
+                        if quantumRestante == 0:
+                            inSobrecarga = True
+                            grafico.addSobrecarga(tempo_atual, 1, processo.id)
+                            quantumRestante = self.quantum
+                        else:    
+                            grafico.addExecucao(tempo_atual, 1, processo.id)
+                            processo.execucaoRestante -= 1
+                            quantumRestante -= 1
+                    else:
+                        grafico.addEspera(tempo_atual, 1, processo.id)
+
+                tempo_atual += 1
+        
+                if processosProntos[0].execucaoRestante == 0:
+                    processosProntos[0].tempo = tempo_atual
+                    queue.remove(processosProntos[0])
+                    processosProntos.pop(0)
+                    quantumRestante = self.quantum
+                elif inSobrecarga:
+                    self.updatePronto(processosProntos, queue, tempo_atual)
+                    temp = processosProntos.pop(0)
+                    processosProntos.append(temp)
+                    inSobrecarga = False
+
+        grafico.salvaGrafico(tempo_atual)
+    
+    def updatePronto(self, processosProntos, queue, tempo_atual):
+        for processo in queue:
+            if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
+                processosProntos.append(processo)
 
 class EDF:
     def __init__(self, processos, quantum, sobrecarga):
