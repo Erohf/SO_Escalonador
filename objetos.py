@@ -22,12 +22,14 @@ class Processo:
 
 class Escolha:
     def __init__(self):
-        print("\nQual o algoritmo de escalonamento?")
+        print("\nMenu de ações:")
         print("1 - FIFO")
         print("2 - SJF")
         print("3 - EDF")
         print("4 - Round Robin")
-        self.opcao = int(input("\nEscolha uma opção (1-4): "))
-        while self.opcao not in [1, 2, 3, 4]:
+        print("5 - Trocar valores")
+        print("6 - Sair do programa")
+        self.opcao = int(input("\nEscolha uma opção: "))
+        while self.opcao not in [1, 2, 3, 4, 5, 6]:
             print("\nOpção inválida. Tente novamente.")
-            self.opcao = int(input("Escolha uma opção (1-4): "))
+            self.opcao = int(input("Escolha uma opção (1-6): "))

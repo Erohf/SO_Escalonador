@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 
 class Grafico:
     def __init__(self, numProcessos, tipoEscalonamento):
@@ -39,4 +40,13 @@ class Grafico:
     
     def salvaGrafico(self, tempoFinal):
         self.gantt.set_xlim(0, tempoFinal)
+
+        legend_patches = [
+            Patch(facecolor='tab:green', label='Verde (Executando)'),
+            Patch(facecolor='yellow', label='Amarelo (Espera)'),
+            Patch(facecolor='tab:red', label='Red (Sobrecarga)')
+        ]
+        self.gantt.legend(handles=legend_patches, loc='upper right')
+
         plt.savefig(f"resultado{self.tipoEscalonamento}.png")
+        plt.show()

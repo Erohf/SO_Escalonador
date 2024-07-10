@@ -47,6 +47,10 @@ class SJF:
 
         self.updatePronto(processosProntos, queue, tempo_atual)
         while queue:
+            print(f"Tempo atual: {tempo_atual}")
+            print(f"Processos na fila: {[p.id for p in queue]}")
+            print(f"Processos prontos: {[p.id for p in processosProntos]}")
+            
             if len(processosProntos) == 0:
                 self.updatePronto(processosProntos, queue, tempo_atual)
                 tempo_atual += 1
@@ -75,11 +79,8 @@ class SJF:
             if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
                 processosProntos.append(processo)
         
-        processosProntos.sort(key = lambda p: p.execucao)
+        processosProntos.sort(key=lambda p: p.execucao)
 
-        
-
-            
 class RoundRobin:
     def __init__(self, processos, quantum, sobrecarga):
         self.processos = sorted(processos, key=lambda p: p.chegada)
@@ -149,9 +150,6 @@ class EDF:
             else:
                 if processo.chegada > tempo_atual:
                     tempo_atual = processo.chegada
-                processo.tempo = tempo_atual
-                tempo_execucao = processo.execucao + self.sobrecarga
-                print(f"Processo {processo.id} executado de {tempo_atual} até {tempo_atual + processo.execucao}")
-                tempo_atual += tempo_execucao
-                if self.sobrecarga > 0:
-                    print(f"Sobrecarga de {tempo_atual - self.sobrecarga} até {tempo_atual}")
+                processo.tempo = tempo_atual + processo.execucaoRestante
+                tempo_atual += processo.execucaoRestante
+                print(f"Processo {processo.id} finalizado no tempo {processo.tempo}.")

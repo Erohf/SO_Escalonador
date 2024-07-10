@@ -1,51 +1,71 @@
 from objetos import *
 from algoritmos import *
+import sys
+import copy
 
 def main():
-    int_quantum = int(input("\nQual o quantum do sistema? "))
 
-    int_sobrecarga = int(input("\nQual a sobrecarga do sistema? "))
+    def sistema():
+        int_quantum = int(input("\nQual o quantum do sistema? "))
+        int_sobrecarga = int(input("\nQual a sobrecarga do sistema? "))
+        sistema = Sistema(int_quantum, int_sobrecarga)
 
-    sistema = Sistema(int_quantum, int_sobrecarga)
+        int_processos = int(input("\nQual o número de processos? "))
+        processos = []
 
-    int_processos = int(input("\nQual o número de processos? "))
+        for i in range(int_processos):
+            int_id = i + 1
+            int_chegada = int(input(f"\nQual o tempo de chegada do processo {int_id}? "))
+            int_execucao = int(input(f"\nQual o tempo de execução do processo {int_id}? "))
+            int_deadline = int(input(f"\nQual o deadline do processo {int_id}? "))
 
-    processos = []
+            processo = Processo(int_id, int_chegada, int_execucao, int_deadline)
+            processos.append(processo)
+            print(f"\nProcesso {int_id} criado com sucesso!")
 
-    for i in range(int_processos):
-        int_id = i+1
+        while True:
+            choice(processos, sistema.quantum, sistema.sobrecarga)
 
-        int_chegada = int(input(f"\nQual o tempo de chegada do processo {int_id}? "))
+    def choice(processos, quantum, sobrecarga):
+        print("\nEscolha o algoritmo de escalonamento:")
+        print("1. FIFO")
+        print("2. SJF")
+        print("3. EDF")
+        print("4. Round Robin")
+        print("5. Reiniciar")
+        print("6. Sair")
 
-        int_execucao = int(input(f"\nQual o tempo de execução do processo {int_id}? "))
+        escolha = int(input("Digite sua escolha: "))
+        print(f"\nVocê escolheu o algoritmo: {escolha}")
+        menu(escolha, processos, quantum, sobrecarga)
 
-        int_deadline = int(input(f"\nQual o deadline do processo {int_id}? "))
+    def menu(escolha, processos, quantum, sobrecarga):
+        from algoritmos import FIFO, SJF, EDF, RoundRobin
 
-        # print(f"Qual a prioridade do processo {i}?")
-        # int_prioridade = int(input())
+        if escolha == 1:
+            escalonador = FIFO(copy.deepcopy(processos), quantum, sobrecarga)
+        elif escolha == 2:
+            escalonador = SJF(copy.deepcopy(processos), quantum, sobrecarga)
+        elif escolha == 3:
+            escalonador = EDF(copy.deepcopy(processos), quantum, sobrecarga)
+        elif escolha == 4:
+            escalonador = RoundRobin(copy.deepcopy(processos), quantum, sobrecarga)
+        elif escolha == 5:
+            main()
+            return
+        elif escolha == 6:
+            sys.exit()
+        else:
+            print("Escolha inválida. Tente novamente.")
+            return
 
-        processo = Processo(int_id, int_chegada, int_execucao, int_deadline)
-        processos.append(processo)
+        escalonador.executar()
 
-        print(f"\nProcesso {int_id} criado com sucesso!")
+        print("\nLista de Processos Armazenados:")
+        for processo in processos:
+            print(processo)
 
-    escolha = Escolha()
-    print(f"\nVocê escolheu o algoritmo: {escolha.opcao}")
-
-    if escolha.opcao == 1:
-        escalonador = FIFO(processos, sistema.quantum, sistema.sobrecarga)
-    elif escolha.opcao == 2:
-        escalonador = SJF(processos, sistema.quantum, sistema.sobrecarga)
-    elif escolha.opcao == 3:
-        escalonador = EDF(processos, sistema.quantum, sistema.sobrecarga)
-    elif escolha.opcao == 4:
-        escalonador = RoundRobin(processos, sistema.quantum, sistema.sobrecarga)
-    
-    escalonador.executar()
-
-    print("\nLista de Processos Armazenados:")
-    for processo in processos:
-        print(processo)
+    sistema()
 
 if __name__ == '__main__':
     main()
