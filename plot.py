@@ -29,8 +29,9 @@ class Grafico:
 
         self.gantt.grid(True)
     
-    def addExecucao(self, tInicio, tExecucao, idProcesso):
-        self.gantt.broken_barh([(tInicio, tExecucao)], ((10*idProcesso)-5, 10), facecolors =('tab:green'))
+    def addExecucao(self, tInicio, tExecucao, idProcesso, overDeadline = False):
+        color = 'gray' if overDeadline else 'tab:green'
+        self.gantt.broken_barh([(tInicio, tExecucao)], ((10*idProcesso)-5, 10), facecolors =(color))
 
     def addSobrecarga(self, tInicio, tSobrecarga, idProcesso):
         self.gantt.broken_barh([(tInicio, tSobrecarga)], ((10*idProcesso)-5, 10), facecolors =('tab:red'))
@@ -40,6 +41,8 @@ class Grafico:
     
     def salvaGrafico(self, tempoFinal):
         self.gantt.set_xlim(0, tempoFinal)
+        ticks = [x for x in range(1, tempoFinal + 1)]
+        self.gantt.set_xticks(ticks)
 
         legend_patches = [
             Patch(facecolor='tab:green', label='Verde (Executando)'),
