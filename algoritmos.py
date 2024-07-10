@@ -46,21 +46,14 @@ class SJF:
         self.processos = sorted(processos, key=lambda p: (p.chegada, p.execucao))
         self.quantum = quantum
         self.sobrecarga = sobrecarga
-
     def executar(self):
         grafico = Grafico(len(self.processos), "SJF")
-
         queue = self.processos[:]
         processosProntos = []
         tempo_atual = 0
-        print("\nExecutando escalonamento SJF:")
-
+        print("Executando escalonamento SJF:")
         self.updatePronto(processosProntos, queue, tempo_atual)
         while queue:
-            print(f"Tempo atual: {tempo_atual}")
-            print(f"Processos na fila: {[p.id for p in queue]}")
-            print(f"Processos prontos: {[p.id for p in processosProntos]}")
-            
             if len(processosProntos) == 0:
                 self.updatePronto(processosProntos, queue, tempo_atual)
                 tempo_atual += 1
@@ -73,7 +66,6 @@ class SJF:
                     else:
                         if processo.chegada <= tempo_atual:
                             grafico.addEspera(tempo_atual, 1, processo.id)
-
                 tempo_atual += 1
         
                 if processosProntos[0].execucaoRestante == 0:
@@ -89,7 +81,7 @@ class SJF:
             if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
                 processosProntos.append(processo)
         
-        processosProntos.sort(key=lambda p: p.execucao)
+        processosProntos.sort(key = lambda p: p.execucao)
 
 class RoundRobin:
     def __init__(self, processos, quantum, sobrecarga):
@@ -126,7 +118,7 @@ class RoundRobin:
                         grafico.addEspera(tempo_atual, 1, processo.id)
 
                 tempo_atual += 1
-        
+
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
                     queue.remove(processosProntos[0])
@@ -139,7 +131,7 @@ class RoundRobin:
                     inSobrecarga = False
 
         grafico.salvaGrafico(tempo_atual)
-    
+
     def updatePronto(self, processosProntos, queue, tempo_atual):
         for processo in queue:
             if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
