@@ -28,7 +28,6 @@ class FIFO:
             if queue[0].execucaoRestante == 0:
                 queue[0].tempo = tempo_atual
                 queue.pop(0)
-        
         grafico.salvaGrafico(tempo_atual)
 
 class SJF:
