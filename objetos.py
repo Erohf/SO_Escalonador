@@ -11,25 +11,11 @@ class Processo:
         self.execucaoRestante = execucao
         self.deadline = deadline
         self.prioridade = prioridade
-        self.tempo = tempo - chegada
+        self.tempo = tempo
+        self.turnaround = 0
 
     def __str__(self):
-        return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, Deadline: {self.deadline}, Tempo: {self.tempo}")
+        return (f"Processo ID: {self.id}, Chegada: {self.chegada}, Execução: {self.execucao}, Deadline: {self.deadline}, Turnaround: {self.turnaround}")
 
     def __eq__(self, other):
         return self.id == other.id
-
-
-class Escolha:
-    def __init__(self):
-        print("\nMenu de ações:")
-        print("1 - FIFO")
-        print("2 - SJF")
-        print("3 - EDF")
-        print("4 - Round Robin")
-        print("5 - Trocar valores")
-        print("6 - Sair do programa")
-        self.opcao = int(input("\nEscolha uma opção: "))
-        while self.opcao not in [1, 2, 3, 4, 5, 6]:
-            print("\nOpção inválida. Tente novamente.")
-            self.opcao = int(input("Escolha uma opção (1-6): "))

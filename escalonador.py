@@ -1,7 +1,6 @@
 from objetos import *
 from algoritmos import *
 import sys
-import copy
 
 def main():
 
@@ -23,8 +22,10 @@ def main():
             processos.append(processo)
             print(f"\nProcesso {int_id} criado com sucesso!")
 
+        sent = processos
+
         while True:
-            choice(processos, sistema.quantum, sistema.sobrecarga)
+            choice(sent, sistema.quantum, sistema.sobrecarga)
 
     def choice(processos, quantum, sobrecarga):
         print("\nEscolha o algoritmo de escalonamento:")
@@ -32,7 +33,7 @@ def main():
         print("2. SJF")
         print("3. EDF")
         print("4. Round Robin")
-        print("5. Reiniciar")
+        print("5. Trocar valores")
         print("6. Sair")
 
         escolha = int(input("Digite sua escolha: "))
@@ -43,13 +44,13 @@ def main():
         from algoritmos import FIFO, SJF, EDF, RoundRobin
 
         if escolha == 1:
-            escalonador = FIFO(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = FIFO(processos, quantum, sobrecarga)
         elif escolha == 2:
-            escalonador = SJF(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = SJF(processos, quantum, sobrecarga)
         elif escolha == 3:
-            escalonador = EDF(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = EDF(processos, quantum, sobrecarga)
         elif escolha == 4:
-            escalonador = RoundRobin(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = RoundRobin(processos, quantum, sobrecarga)
         elif escolha == 5:
             main()
             return
@@ -60,10 +61,6 @@ def main():
             return
 
         escalonador.executar()
-
-        print("\nLista de Processos Armazenados:")
-        for processo in processos:
-            print(processo)
 
     sistema()
 

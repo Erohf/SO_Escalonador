@@ -5,13 +5,17 @@ class FIFO:
         self.processos = sorted(processos, key=lambda p: p.chegada)
         self.quantum = quantum
         self.sobrecarga = sobrecarga
+        self.listaProcessos = self.processos[:]
 
     def executar(self):
         grafico = Grafico(len(self.processos), "FIFO")
 
         queue = self.processos[:]
         tempo_atual = 0
-        print("Executando escalonamento FIFO:")
+        turnaround = 0
+        turnaroundmedio = 0
+        turnaround_list = []
+        print("\nExecutando escalonamento FIFO:")
         
         while queue:
             for processo in queue:
@@ -22,12 +26,19 @@ class FIFO:
                 else:
                     if processo.chegada <= tempo_atual:
                         grafico.addEspera(tempo_atual, 1, processo.id)
-
+                        
             tempo_atual += 1
-
+            
             if queue[0].execucaoRestante == 0:
                 queue[0].tempo = tempo_atual
-                queue.pop(0)
+                turnaround = queue[0].tempo - queue[0].chegada
+                queue[0].turnaround = turnaround
+                turnaroundmedio += turnaround
+                print (queue[0])
+                queue.pop(0) 
+
+        print(f"\nTurnaround médio: {turnaroundmedio/len(self.processos)}")
+
         grafico.salvaGrafico(tempo_atual)
 
 class SJF:
@@ -42,7 +53,7 @@ class SJF:
         queue = self.processos[:]
         processosProntos = []
         tempo_atual = 0
-        print("Executando escalonamento SJF:")
+        print("\nExecutando escalonamento SJF:")
 
         self.updatePronto(processosProntos, queue, tempo_atual)
         while queue:
@@ -89,7 +100,7 @@ class RoundRobin:
     def executar(self):
         grafico = Grafico(len(self.processos), "RoundRobin")
 
-        print(f"Executando escalonamento Round Robin com quantum = {self.quantum}:")
+        print(f"\nExecutando escalonamento Round Robin com quantum = {self.quantum}:")
         tempo_atual = 0
         queue = self.processos[:]
         processosProntos = []
@@ -141,7 +152,7 @@ class EDF:
         self.sobrecarga = sobrecarga
 
     def executar(self):
-        print("Executando escalonamento EDF:")
+        print("\nExecutando escalonamento EDF:")
         tempo_atual = 0
         for processo in self.processos:
             if processo.chegada > processo.deadline:
