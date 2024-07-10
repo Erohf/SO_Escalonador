@@ -152,14 +152,51 @@ class EDF:
         self.sobrecarga = sobrecarga
 
     def executar(self):
-        print("\nExecutando escalonamento EDF:")
+        grafico = Grafico(len(self.processos), "EDF")
+
+        print(f"Executando escalonamento EDF com quantum = {self.quantum}:")
         tempo_atual = 0
-        for processo in self.processos:
-            if processo.chegada > processo.deadline:
-                print(f"Processo {processo.id} perdeu o deadline.")
+        queue = self.processos[:]
+        processosProntos = []
+        quantumRestante = self.quantum
+        inSobrecarga = False
+        
+        while queue:
+            self.updatePronto(processosProntos, queue, tempo_atual)
+            if len(processosProntos) == 0:
+                tempo_atual += 1
             else:
-                if processo.chegada > tempo_atual:
-                    tempo_atual = processo.chegada
-                processo.tempo = tempo_atual + processo.execucaoRestante
-                tempo_atual += processo.execucaoRestante
-                print(f"Processo {processo.id} finalizado no tempo {processo.tempo}.")
+                for processo in processosProntos:
+                    if processo == processosProntos[0]:
+                        if quantumRestante == 0:
+                            inSobrecarga = True
+                            grafico.addSobrecarga(tempo_atual, 1, processo.id)
+                            quantumRestante = self.quantum
+                        else:
+                            grafico.addExecucao(tempo_atual, 1, processo.id, (processo.deadline <= tempo_atual))
+                            processo.execucaoRestante -= 1
+                            quantumRestante -= 1
+                    else:
+                        grafico.addEspera(tempo_atual, 1, processo.id)
+
+                tempo_atual += 1
+        
+                if processosProntos[0].execucaoRestante == 0:
+                    processosProntos[0].tempo = tempo_atual
+                    queue.remove(processosProntos[0])
+                    processosProntos.pop(0)
+                    quantumRestante = self.quantum
+                    processosProntos.sort(key = lambda p: p.deadline)
+                elif inSobrecarga:
+                    self.updatePronto(processosProntos, queue, tempo_atual)
+                    temp = processosProntos.pop(0)
+                    processosProntos.append(temp)
+                    inSobrecarga = False
+                    processosProntos.sort(key = lambda p: p.deadline)
+
+        grafico.salvaGrafico(tempo_atual)
+
+    def updatePronto(self, processosProntos, queue, tempo_atual):
+        for processo in queue:
+            if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
+                processosProntos.append(processo)
