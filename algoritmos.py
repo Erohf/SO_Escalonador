@@ -54,8 +54,8 @@ class SJF:
         print("Executando escalonamento SJF:")
         self.updatePronto(processosProntos, queue, tempo_atual)
         while queue:
+            self.updatePronto(processosProntos, queue, tempo_atual)
             if len(processosProntos) == 0:
-                self.updatePronto(processosProntos, queue, tempo_atual)
                 tempo_atual += 1
             else:
                 for processo in queue:
@@ -72,7 +72,7 @@ class SJF:
                     processosProntos[0].tempo = tempo_atual
                     queue.remove(processosProntos[0])
                     processosProntos.pop(0)
-                    self.updatePronto(processosProntos, queue, tempo_atual)
+                    processosProntos.sort(key = lambda p: p.execucao)
             
         grafico.salvaGrafico(tempo_atual)
     
@@ -80,8 +80,6 @@ class SJF:
         for processo in queue:
             if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
                 processosProntos.append(processo)
-        
-        processosProntos.sort(key = lambda p: p.execucao)
 
 class RoundRobin:
     def __init__(self, processos, quantum, sobrecarga):
