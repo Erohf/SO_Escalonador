@@ -13,8 +13,8 @@ class FIFO:
         queue = self.processos[:]
         tempo_atual = 0
         turnaround = 0
-        turnaroundmedio = 0
-
+        turnaroundMedio = 0
+        
         print("\nExecutando escalonamento FIFO:")
         
         while queue:
@@ -33,11 +33,11 @@ class FIFO:
                 queue[0].tempo = tempo_atual
                 turnaround = queue[0].tempo - queue[0].chegada
                 queue[0].turnaround = turnaround
-                turnaroundmedio += turnaround
+                turnaroundMedio += turnaround
                 print (queue[0])
                 queue.pop(0) 
 
-        print(f"\nTurnaround médio: {turnaroundmedio/len(self.processos)}")
+        print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
         grafico.salvaGrafico(tempo_atual)
 
@@ -48,14 +48,18 @@ class SJF:
         self.sobrecarga = sobrecarga
     def executar(self):
         grafico = Grafico(len(self.processos), "SJF")
+
         queue = self.processos[:]
         processosProntos = []
         tempo_atual = 0
+        turnaround = 0
+        turnaroundMedio = 0
+
         print("Executando escalonamento SJF:")
         self.updatePronto(processosProntos, queue, tempo_atual)
         while queue:
+            self.updatePronto(processosProntos, queue, tempo_atual)
             if len(processosProntos) == 0:
-                self.updatePronto(processosProntos, queue, tempo_atual)
                 tempo_atual += 1
             else:
                 for processo in queue:
@@ -70,18 +74,22 @@ class SJF:
         
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
+                    turnaround = processosProntos[0].tempo - processosProntos[0].chegada
+                    processosProntos[0].turnaround = turnaround
+                    turnaroundMedio += turnaround
+                    print(processosProntos[0])
                     queue.remove(processosProntos[0])
                     processosProntos.pop(0)
-                    self.updatePronto(processosProntos, queue, tempo_atual)
-            
+                    processosProntos.sort(key = lambda p: p.execucao)
+        
+        print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
+
         grafico.salvaGrafico(tempo_atual)
     
     def updatePronto(self, processosProntos, queue, tempo_atual):
         for processo in queue:
             if (processo.chegada <= tempo_atual) and (processo not in processosProntos):
                 processosProntos.append(processo)
-        
-        processosProntos.sort(key = lambda p: p.execucao)
 
 class RoundRobin:
     def __init__(self, processos, quantum, sobrecarga):
@@ -94,6 +102,8 @@ class RoundRobin:
 
         print(f"\nExecutando escalonamento Round Robin com quantum = {self.quantum}:")
         tempo_atual = 0
+        turnaround = 0
+        turnaroundMedio = 0
         queue = self.processos[:]
         processosProntos = []
         quantumRestante = self.quantum
@@ -121,6 +131,10 @@ class RoundRobin:
 
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
+                    turnaround = processosProntos[0].tempo - processosProntos[0].chegada
+                    processosProntos[0].turnaround = turnaround
+                    turnaroundMedio += turnaround
+                    print(processosProntos[0])
                     queue.remove(processosProntos[0])
                     processosProntos.pop(0)
                     quantumRestante = self.quantum
@@ -129,6 +143,8 @@ class RoundRobin:
                     temp = processosProntos.pop(0)
                     processosProntos.append(temp)
                     inSobrecarga = False
+
+        print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
         grafico.salvaGrafico(tempo_atual)
 
@@ -148,6 +164,8 @@ class EDF:
 
         print(f"Executando escalonamento EDF com quantum = {self.quantum}:")
         tempo_atual = 0
+        turnaround = 0
+        turnaroundMedio = 0
         queue = self.processos[:]
         processosProntos = []
         quantumRestante = self.quantum
@@ -175,6 +193,10 @@ class EDF:
         
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
+                    turnaround = processosProntos[0].tempo - processosProntos[0].chegada
+                    processosProntos[0].turnaround = turnaround
+                    turnaroundMedio += turnaround
+                    print(processosProntos[0])
                     queue.remove(processosProntos[0])
                     processosProntos.pop(0)
                     quantumRestante = self.quantum
@@ -185,6 +207,8 @@ class EDF:
                     processosProntos.append(temp)
                     inSobrecarga = False
                     processosProntos.sort(key = lambda p: p.deadline)
+
+        print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
         grafico.salvaGrafico(tempo_atual)
 
