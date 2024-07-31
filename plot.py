@@ -6,39 +6,39 @@ class Grafico:
         self.numProcessos = numProcessos
         self.tipoEscalonamento = tipoEscalonamento
         self._iniciaGrafico()
+        plt.ion()
 
     def _iniciaGrafico(self):
         self.fig, self.gantt = plt.subplots()
-
         self.gantt.title.set_text(f'{self.tipoEscalonamento}')
-
         self.gantt.set_xlim(0, 50)
         self.gantt.set_ylim(0, (self.numProcessos * 10) + 10)
-
         self.gantt.set_xlabel("Tempo")
         self.gantt.set_ylabel("Processos")
 
-        ticks = []
-        tickLabels = []
-        for i in range(1, self.numProcessos + 1):
-            ticks.append(i*10)
-            tickLabels.append(f'{i}')
-        
+        ticks = [i * 10 for i in range(1, self.numProcessos + 1)]
+        tickLabels = [f'{i}' for i in range(1, self.numProcessos + 1)]
         self.gantt.set_yticks(ticks)
         self.gantt.set_yticklabels(tickLabels)
-
         self.gantt.grid(True)
-    
-    def addExecucao(self, tInicio, tExecucao, idProcesso, overDeadline = False):
+
+    def addExecucao(self, tInicio, tExecucao, idProcesso, overDeadline=False):
         color = 'gray' if overDeadline else 'tab:green'
-        self.gantt.broken_barh([(tInicio, tExecucao)], ((10*idProcesso)-5, 10), facecolors =(color))
+        self.gantt.broken_barh([(tInicio, tExecucao)], ((10 * idProcesso) - 5, 10), facecolors=color)
+        self._refreshPlot()
 
     def addSobrecarga(self, tInicio, tSobrecarga, idProcesso):
-        self.gantt.broken_barh([(tInicio, tSobrecarga)], ((10*idProcesso)-5, 10), facecolors =('tab:red'))
-    
+        self.gantt.broken_barh([(tInicio, tSobrecarga)], ((10 * idProcesso) - 5, 10), facecolors='tab:red')
+        self._refreshPlot()
+
     def addEspera(self, tInicio, tEspera, idProcesso):
-        self.gantt.broken_barh([(tInicio, tEspera)], ((10*idProcesso)-5, 10), facecolors ='yellow')
-    
+        self.gantt.broken_barh([(tInicio, tEspera)], ((10 * idProcesso) - 5, 10), facecolors='yellow')
+        self._refreshPlot()
+
+    def _refreshPlot(self):
+        plt.draw()
+        plt.pause(0.01)
+
     def salvaGrafico(self, tempoFinal):
         self.gantt.set_xlim(0, tempoFinal)
         ticks = [x for x in range(1, tempoFinal + 1)]
@@ -47,9 +47,10 @@ class Grafico:
         legend_patches = [
             Patch(facecolor='tab:green', label='Verde (Executando)'),
             Patch(facecolor='yellow', label='Amarelo (Espera)'),
-            Patch(facecolor='tab:red', label='Red (Sobrecarga)')
+            Patch(facecolor='tab:red', label='Vermelho (Sobrecarga)')
         ]
         self.gantt.legend(handles=legend_patches, loc='upper right')
 
+        plt.ioff()
         plt.savefig(f"resultado{self.tipoEscalonamento}.png")
         plt.show()

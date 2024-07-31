@@ -14,7 +14,7 @@ class FIFO:
         tempo_atual = 0
         turnaround = 0
         turnaroundmedio = 0
-        
+
         print("\nExecutando escalonamento FIFO:")
         
         while queue:
