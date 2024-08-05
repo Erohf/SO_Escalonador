@@ -44,9 +44,10 @@ class Grafico:
         self.gantt.set_xticks(ticks)
 
         legend_patches = [
-            Patch(facecolor='tab:green', label='Verde (Executando)'),
-            Patch(facecolor='yellow', label='Amarelo (Espera)'),
-            Patch(facecolor='tab:red', label='Vermelho (Sobrecarga)')
+            Patch(facecolor='tab:green', label='Executando'),
+            Patch(facecolor='yellow', label='Espera'),
+            Patch(facecolor='tab:red', label='Sobrecarga'),
+            Patch(facecolor='tab:grey', label='Estourou Deadline')
         ]
         self.gantt.legend(handles=legend_patches, loc='upper right')
 

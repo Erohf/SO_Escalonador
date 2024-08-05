@@ -191,7 +191,7 @@ class EDF:
                             grafico.addSobrecarga(tempo_atual, 1, processo.id)
                             quantumRestante = self.quantum
                         else:
-                            grafico.addExecucao(tempo_atual, 1, processo.id, (processo.deadline <= tempo_atual))
+                            grafico.addExecucao(tempo_atual, 1, processo.id, (processo.deadline + processo.chegada <= tempo_atual))
                             processo.execucaoRestante -= 1
                             quantumRestante -= 1
                     else:
