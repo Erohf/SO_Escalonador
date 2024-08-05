@@ -1,7 +1,8 @@
 class Sistema:
-    def __init__(self, quantum, sobrecarga):
+    def __init__(self, quantum, sobrecarga, speed=1):
         self.quantum = quantum
         self.sobrecarga = sobrecarga
+        self.speed = speed
 
 class Processo:
     def __init__(self, id, chegada, execucao, deadline, tempo=0, prioridade=None):

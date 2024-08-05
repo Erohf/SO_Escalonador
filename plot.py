@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
+from objetos import *
 from matplotlib.patches import Patch
 
 class Grafico:
-    def __init__(self, numProcessos, tipoEscalonamento):
+    def __init__(self, numProcessos, tipoEscalonamento, speed):
         self.numProcessos = numProcessos
         self.tipoEscalonamento = tipoEscalonamento
+        self.speed = speed
         self._iniciaGrafico()
         plt.ion()
 
@@ -25,19 +27,16 @@ class Grafico:
     def addExecucao(self, tInicio, tExecucao, idProcesso, overDeadline=False):
         color = 'gray' if overDeadline else 'tab:green'
         self.gantt.broken_barh([(tInicio, tExecucao)], ((10 * idProcesso) - 5, 10), facecolors=color)
-        self._refreshPlot()
 
     def addSobrecarga(self, tInicio, tSobrecarga, idProcesso):
         self.gantt.broken_barh([(tInicio, tSobrecarga)], ((10 * idProcesso) - 5, 10), facecolors='tab:red')
-        self._refreshPlot()
 
     def addEspera(self, tInicio, tEspera, idProcesso):
         self.gantt.broken_barh([(tInicio, tEspera)], ((10 * idProcesso) - 5, 10), facecolors='yellow')
-        self._refreshPlot()
 
     def _refreshPlot(self):
         plt.draw()
-        plt.pause(0.01)
+        plt.pause(0.5/self.speed)
 
     def salvaGrafico(self, tempoFinal):
         self.gantt.set_xlim(0, tempoFinal)

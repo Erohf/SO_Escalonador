@@ -7,13 +7,14 @@ class FIFO:
         self.sobrecarga = sobrecarga
         self.listaProcessos = self.processos[:]
 
-    def executar(self):
-        grafico = Grafico(len(self.processos), "FIFO")
+    def executar(self, speed):
+        grafico = Grafico(len(self.processos), "FIFO", speed)
 
         queue = self.processos[:]
         tempo_atual = 0
         turnaround = 0
         turnaroundMedio = 0
+        grafico.speed = speed
         
         print("\nExecutando escalonamento FIFO:")
         
@@ -28,6 +29,7 @@ class FIFO:
                         grafico.addEspera(tempo_atual, 1, processo.id)
                         
             tempo_atual += 1
+            grafico._refreshPlot()
             
             if queue[0].execucaoRestante == 0:
                 queue[0].tempo = tempo_atual
@@ -46,14 +48,16 @@ class SJF:
         self.processos = sorted(processos, key=lambda p: (p.chegada, p.execucao))
         self.quantum = quantum
         self.sobrecarga = sobrecarga
-    def executar(self):
-        grafico = Grafico(len(self.processos), "SJF")
+
+    def executar(self, speed):
+        grafico = Grafico(len(self.processos), "SJF", speed)
 
         queue = self.processos[:]
         processosProntos = []
         tempo_atual = 0
         turnaround = 0
         turnaroundMedio = 0
+        grafico.speed = speed
 
         print("Executando escalonamento SJF:")
         self.updatePronto(processosProntos, queue, tempo_atual)
@@ -71,6 +75,7 @@ class SJF:
                         if processo.chegada <= tempo_atual:
                             grafico.addEspera(tempo_atual, 1, processo.id)
                 tempo_atual += 1
+                grafico._refreshPlot()
         
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
@@ -97,8 +102,8 @@ class RoundRobin:
         self.quantum = quantum
         self.sobrecarga = sobrecarga
 
-    def executar(self):
-        grafico = Grafico(len(self.processos), "RoundRobin")
+    def executar(self, speed):
+        grafico = Grafico(len(self.processos), "RoundRobin", speed)
 
         print(f"\nExecutando escalonamento Round Robin com quantum = {self.quantum}:")
         tempo_atual = 0
@@ -108,6 +113,7 @@ class RoundRobin:
         processosProntos = []
         quantumRestante = self.quantum
         inSobrecarga = False
+        grafico.speed = speed
         
         while queue:
             self.updatePronto(processosProntos, queue, tempo_atual)
@@ -128,6 +134,7 @@ class RoundRobin:
                         grafico.addEspera(tempo_atual, 1, processo.id)
 
                 tempo_atual += 1
+                grafico._refreshPlot()
 
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual
@@ -159,8 +166,8 @@ class EDF:
         self.quantum = quantum
         self.sobrecarga = sobrecarga
 
-    def executar(self):
-        grafico = Grafico(len(self.processos), "EDF")
+    def executar(self, speed):
+        grafico = Grafico(len(self.processos), "EDF", speed)
 
         print(f"Executando escalonamento EDF com quantum = {self.quantum}:")
         tempo_atual = 0
@@ -169,6 +176,7 @@ class EDF:
         queue = self.processos[:]
         processosProntos = []
         quantumRestante = self.quantum
+        grafico.speed = speed
         inSobrecarga = False
         
         while queue:
@@ -190,6 +198,7 @@ class EDF:
                         grafico.addEspera(tempo_atual, 1, processo.id)
 
                 tempo_atual += 1
+                grafico._refreshPlot()
         
                 if processosProntos[0].execucaoRestante == 0:
                     processosProntos[0].tempo = tempo_atual

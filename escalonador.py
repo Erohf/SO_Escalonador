@@ -8,7 +8,13 @@ def main():
     def sistema():
         int_quantum = int(input("\nQual o quantum do sistema? "))
         int_sobrecarga = int(input("\nQual a sobrecarga do sistema? "))
-        sistema = Sistema(int_quantum, int_sobrecarga)
+        while True:
+            int_speed = int(input("\nEscolha uma velocidade inteira entre 1 - 100 para o plot do gráfico: "))
+            if 1 <= int_speed <= 100:
+                break
+            else:
+                print("Valor inválido. Por favor, insira um número entre 1 e 100.")
+        sistema = Sistema(int_quantum, int_sobrecarga, int_speed)
 
         int_processos = int(input("\nQual o número de processos? "))
         processos = []
@@ -24,9 +30,9 @@ def main():
             print(f"\nProcesso {int_id} criado com sucesso!")
 
         while True:
-            choice(processos, sistema.quantum, sistema.sobrecarga)
+            choice(processos, sistema)
 
-    def choice(processos, quantum, sobrecarga):
+    def choice(processos, sistema):
         print("\nEscolha o algoritmo de escalonamento:")
         print("1. FIFO")
         print("2. SJF")
@@ -37,19 +43,19 @@ def main():
 
         escolha = int(input("Digite sua escolha: "))
         print(f"\nVocê escolheu o algoritmo: {escolha}")
-        menu(escolha, processos, quantum, sobrecarga)
+        menu(escolha, processos, sistema)
 
-    def menu(escolha, processos, quantum, sobrecarga):
+    def menu(escolha, processos, sistema):
         from algoritmos import FIFO, SJF, EDF, RoundRobin
 
         if escolha == 1:
-            escalonador = FIFO(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = FIFO(copy.deepcopy(processos), sistema.quantum, sistema.sobrecarga)
         elif escolha == 2:
-            escalonador = SJF(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = SJF(copy.deepcopy(processos), sistema.quantum, sistema.sobrecarga)
         elif escolha == 3:
-            escalonador = EDF(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = EDF(copy.deepcopy(processos), sistema.quantum, sistema.sobrecarga)
         elif escolha == 4:
-            escalonador = RoundRobin(copy.deepcopy(processos), quantum, sobrecarga)
+            escalonador = RoundRobin(copy.deepcopy(processos), sistema.quantum, sistema.sobrecarga)
         elif escolha == 5:
             main()
             return
@@ -59,7 +65,7 @@ def main():
             print("Escolha inválida. Tente novamente.")
             return
 
-        escalonador.executar()
+        escalonador.executar(sistema.speed)
 
     sistema()
 
