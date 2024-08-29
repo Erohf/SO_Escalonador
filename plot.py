@@ -7,6 +7,8 @@ class Grafico:
         self.numProcessos = numProcessos
         self.tipoEscalonamento = tipoEscalonamento
         self.speed = speed
+        self.xticks = [0]
+        self.contador = 0
         self._iniciaGrafico()
         plt.ion()
 
@@ -38,13 +40,16 @@ class Grafico:
         self.gantt.broken_barh([(tInicio, tEspera)], ((10 * idProcesso) - 5, 10), facecolors='yellow')
 
     def _refreshPlot(self):
+        self.contador += 1
+        self.xticks.append(self.contador)
+        self.gantt.set_xticks(self.xticks)
         plt.draw()
         plt.pause(0.5/self.speed)
 
     def salvaGrafico(self, tempoFinal):
         self.gantt.set_xlim(0, tempoFinal)
-        ticks = [x for x in range(1, tempoFinal + 1)]
-        self.gantt.set_xticks(ticks)
+        xticks = [x for x in range(1, tempoFinal + 1)]
+        self.gantt.set_xticks(xticks)
 
         legend_patches = [
             Patch(facecolor='tab:green', label='Executando'),
