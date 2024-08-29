@@ -12,7 +12,10 @@ class Grafico:
 
     def _iniciaGrafico(self):
         self.fig, self.gantt = plt.subplots()
-        self.gantt.title.set_text(f'{self.tipoEscalonamento}')
+        self.fig.set_figwidth(12)
+        self.fig.set_figheight(8)
+        self.gantt.title.set_text('Pressione "Q" para fechar')
+        self.fig.suptitle(f'{self.tipoEscalonamento}', fontsize=24)
         self.gantt.set_xlim(0, 50)
         self.gantt.set_ylim(0, (self.numProcessos * 10) + 10)
         self.gantt.set_xlabel("Tempo")

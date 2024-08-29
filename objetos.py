@@ -10,7 +10,7 @@ class Processo:
         self.chegada = chegada
         self.execucao = execucao
         self.execucaoRestante = execucao
-        self.deadline = deadline
+        self.deadline = deadline + chegada
         self.prioridade = prioridade
         self.tempo = tempo
         self.turnaround = 0

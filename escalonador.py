@@ -9,11 +9,11 @@ def main():
         int_quantum = int(input("\nQual o quantum do sistema? "))
         int_sobrecarga = int(input("\nQual a sobrecarga do sistema? "))
         while True:
-            int_speed = int(input("\nEscolha uma velocidade inteira entre 1 - 100 para o plot do gráfico: "))
-            if 1 <= int_speed <= 100:
+            int_speed = float(input("\nEscolha uma velocidade entre 0.1 - 10 (1 sendo o padrão) para o plot do gráfico: "))
+            if 0.1 <= int_speed <= 10:
                 break
             else:
-                print("Valor inválido. Por favor, insira um número entre 1 e 100.")
+                print("Valor inválido. Por favor, insira um número entre 0.1 e 10.")
         sistema = Sistema(int_quantum, int_sobrecarga, int_speed)
 
         int_processos = int(input("\nQual o número de processos? "))

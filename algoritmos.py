@@ -41,6 +41,8 @@ class FIFO:
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
+        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+
         grafico.salvaGrafico(tempo_atual)
 
 class SJF:
@@ -88,6 +90,9 @@ class SJF:
                     processosProntos.sort(key = lambda p: p.execucao)
         
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
+
+        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+
 
         grafico.salvaGrafico(tempo_atual)
     
@@ -152,6 +157,9 @@ class RoundRobin:
                     inSobrecarga = False
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
+
+        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+
 
         grafico.salvaGrafico(tempo_atual)
 
@@ -218,6 +226,8 @@ class EDF:
                     processosProntos.sort(key = lambda p: p.deadline)
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
+
+        print(f"\nFeche o gráfico para rodar outro algoritmo.")
 
         grafico.salvaGrafico(tempo_atual)
 
