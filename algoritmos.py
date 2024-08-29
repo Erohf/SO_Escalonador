@@ -41,7 +41,9 @@ class FIFO:
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
-        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+        print(f"\nPressione 'F' para maximizar o gráfico.")
+
+        print(f"\nFeche o gráfico apertando 'Q' para rodar outro algoritmo.")
 
         grafico.salvaGrafico(tempo_atual)
 
@@ -87,11 +89,14 @@ class SJF:
                     print(processosProntos[0])
                     queue.remove(processosProntos[0])
                     processosProntos.pop(0)
+                    self.updatePronto(processosProntos, queue, tempo_atual)
                     processosProntos.sort(key = lambda p: p.execucao)
         
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
-        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+        print(f"\nPressione 'F' para maximizar o gráfico.")
+
+        print(f"\nFeche o gráfico apertando 'Q' para rodar outro algoritmo.")
 
 
         grafico.salvaGrafico(tempo_atual)
@@ -158,7 +163,9 @@ class RoundRobin:
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
-        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+        print(f"\nPressione 'F' para maximizar o gráfico.")
+
+        print(f"\nFeche o gráfico apertando 'Q' para rodar outro algoritmo.")
 
 
         grafico.salvaGrafico(tempo_atual)
@@ -227,7 +234,9 @@ class EDF:
 
         print(f"\nTurnaround médio: {turnaroundMedio/len(self.processos)}")
 
-        print(f"\nFeche o gráfico para rodar outro algoritmo.")
+        print(f"\nPressione 'F' para maximizar o gráfico.")
+
+        print(f"\nFeche o gráfico apertando 'Q' para rodar outro algoritmo.")
 
         grafico.salvaGrafico(tempo_atual)
 
