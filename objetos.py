@@ -5,13 +5,12 @@ class Sistema:
         self.speed = speed
 
 class Processo:
-    def __init__(self, id, chegada, execucao, deadline, tempo=0, prioridade=None):
+    def __init__(self, id, chegada, execucao, deadline, tempo=0):
         self.id = id
         self.chegada = chegada
         self.execucao = execucao
         self.execucaoRestante = execucao
         self.deadline = deadline + chegada
-        self.prioridade = prioridade
         self.tempo = tempo
         self.turnaround = 0
 
